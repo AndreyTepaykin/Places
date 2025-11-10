@@ -312,7 +312,7 @@ Base.prototype.maxSize_parentGeonameId = function () {
 	 */
 Base.column_parentGeonameId = function () {
 
-return [["int",null,null,null],false,"PRI",null];
+return [["int","11","",false],false,"PRI",null];
 };
 
 /**
@@ -347,7 +347,7 @@ Base.prototype.maxSize_childGeonameId = function () {
 	 */
 Base.column_childGeonameId = function () {
 
-return [["int",null,null,null],false,"PRI",null];
+return [["int","11","",false],false,"PRI",null];
 };
 
 /**
@@ -382,7 +382,7 @@ Base.prototype.maxSize_relationType = function () {
 	 */
 Base.column_relationType = function () {
 
-return [["tinyint",null,null,null],false,"MUL",null];
+return [["tinyint","4","",false],false,"MUL",null];
 };
 
 /**

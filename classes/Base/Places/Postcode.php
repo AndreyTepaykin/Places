@@ -438,9 +438,9 @@ return array (
   0 => 
   array (
     0 => 'int',
-    1 => NULL,
-    2 => NULL,
-    3 => NULL,
+    1 => '11',
+    2 => '',
+    3 => false,
   ),
   1 => true,
   2 => '',
@@ -623,9 +623,9 @@ return array (
   0 => 
   array (
     0 => 'int',
-    1 => NULL,
-    2 => NULL,
-    3 => NULL,
+    1 => '11',
+    2 => '',
+    3 => false,
   ),
   1 => true,
   2 => '',

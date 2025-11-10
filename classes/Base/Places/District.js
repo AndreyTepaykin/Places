@@ -319,7 +319,7 @@ Base.prototype.maxSize_geonameId = function () {
 	 */
 Base.column_geonameId = function () {
 
-return [["int",null,null,null],false,"PRI",null];
+return [["int","11","",false],false,"PRI",null];
 };
 
 /**

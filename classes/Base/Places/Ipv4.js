@@ -21,8 +21,8 @@ var Row = Q.require('Db/Row');
  * @constructor
  * @param {Object} [fields={}] The fields values to initialize table row as 
  * an associative array of {column: value} pairs
- * @param {mixed} [fields.ipMin] defaults to ""
- * @param {mixed} [fields.ipMax] defaults to ""
+ * @param {Integer} [fields.ipMin] defaults to 0
+ * @param {Integer} [fields.ipMax] defaults to 0
  * @param {Integer} [fields.geonameId] defaults to 0
  * @param {String} [fields.countryCode] defaults to null
  * @param {Integer} [fields.registeredGeonameId] defaults to 0
@@ -43,14 +43,14 @@ Q.mixin(Base, Row);
 
 /**
  * @property ipMin
- * @type mixed
- * @default ""
+ * @type Integer
+ * @default 0
  * 
  */
 /**
  * @property ipMax
- * @type mixed
- * @default ""
+ * @type Integer
+ * @default 0
  * 
  */
 /**
@@ -344,13 +344,65 @@ Base.fieldNames = function () {
 	];
 };
 
+/**
+ * Method is called before setting the field and verifies if integer value falls within allowed limits
+ * @method beforeSet_ipMin
+ * @param {integer} value
+ * @return {integer} The value
+ * @throws {Error} An exception is thrown if 'value' is not integer or does not fit in allowed range
+ */
+Base.prototype.beforeSet_ipMin = function (value) {
+		if (value instanceof Db.Expression) return value;
+		value = Number(value);
+		if (isNaN(value) || Math.floor(value) != value) 
+			throw new Error('Non-integer value being assigned to '+this.table()+".ipMin");
+		if (value < 0 || value > 4294967295)
+			throw new Error("Out-of-range value "+JSON.stringify(value)+" being assigned to "+this.table()+".ipMin");
+		return value;
+};
+
+/**
+ * Returns the maximum integer that can be assigned to the ipMin field
+ * @return {integer}
+ */
+Base.prototype.maxSize_ipMin = function () {
+
+		return 4294967295;
+};
+
 	/**
 	 * Returns schema information for ipMin column
 	 * @return {array} [[typeName, displayRange, modifiers, unsigned], isNull, key, default]
 	 */
 Base.column_ipMin = function () {
 
-return [["int unsigned",null,null,null],false,"PRI",null];
+return [["int","10"," unsigned",true],false,"PRI",null];
+};
+
+/**
+ * Method is called before setting the field and verifies if integer value falls within allowed limits
+ * @method beforeSet_ipMax
+ * @param {integer} value
+ * @return {integer} The value
+ * @throws {Error} An exception is thrown if 'value' is not integer or does not fit in allowed range
+ */
+Base.prototype.beforeSet_ipMax = function (value) {
+		if (value instanceof Db.Expression) return value;
+		value = Number(value);
+		if (isNaN(value) || Math.floor(value) != value) 
+			throw new Error('Non-integer value being assigned to '+this.table()+".ipMax");
+		if (value < 0 || value > 4294967295)
+			throw new Error("Out-of-range value "+JSON.stringify(value)+" being assigned to "+this.table()+".ipMax");
+		return value;
+};
+
+/**
+ * Returns the maximum integer that can be assigned to the ipMax field
+ * @return {integer}
+ */
+Base.prototype.maxSize_ipMax = function () {
+
+		return 4294967295;
 };
 
 	/**
@@ -359,7 +411,7 @@ return [["int unsigned",null,null,null],false,"PRI",null];
 	 */
 Base.column_ipMax = function () {
 
-return [["int unsigned",null,null,null],false,"PRI",null];
+return [["int","10"," unsigned",true],false,"PRI",null];
 };
 
 /**
@@ -395,7 +447,7 @@ Base.prototype.maxSize_geonameId = function () {
 	 */
 Base.column_geonameId = function () {
 
-return [["int",null,null,null],true,"MUL",null];
+return [["int","11","",false],true,"MUL",null];
 };
 
 /**
@@ -467,7 +519,7 @@ Base.prototype.maxSize_registeredGeonameId = function () {
 	 */
 Base.column_registeredGeonameId = function () {
 
-return [["int",null,null,null],true,"",null];
+return [["int","11","",false],true,"",null];
 };
 
 /**
@@ -503,7 +555,7 @@ Base.prototype.maxSize_representedGeonameId = function () {
 	 */
 Base.column_representedGeonameId = function () {
 
-return [["int",null,null,null],true,"",null];
+return [["int","11","",false],true,"",null];
 };
 
 /**
@@ -695,7 +747,7 @@ Base.prototype.maxSize_accuracy = function () {
 	 */
 Base.column_accuracy = function () {
 
-return [["int",null,null,null],true,"",null];
+return [["int","11","",false],true,"",null];
 };
 
 /**
@@ -752,10 +804,10 @@ Base.prototype.beforeSave = function (value) {
 		}
 	}
 	if (this.fields["ipMin"] == undefined && value["ipMin"] == undefined) {
-		this.fields["ipMin"] = value["ipMin"] = "";
+		this.fields["ipMin"] = value["ipMin"] = 0;
 	}
 	if (this.fields["ipMax"] == undefined && value["ipMax"] == undefined) {
-		this.fields["ipMax"] = value["ipMax"] = "";
+		this.fields["ipMax"] = value["ipMax"] = 0;
 	}
 	return value;
 };

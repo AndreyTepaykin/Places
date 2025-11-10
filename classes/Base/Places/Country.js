@@ -458,7 +458,7 @@ Base.prototype.maxSize_geonameId = function () {
 	 */
 Base.column_geonameId = function () {
 
-return [["int",null,null,null],true,"MUL",null];
+return [["int","11","",false],true,"MUL",null];
 };
 
 /**
@@ -494,7 +494,7 @@ Base.prototype.maxSize_numericCode = function () {
 	 */
 Base.column_numericCode = function () {
 
-return [["int",null,null,null],true,"MUL",null];
+return [["int","11","",false],true,"MUL",null];
 };
 
 /**
@@ -710,7 +710,7 @@ Base.prototype.maxSize_area = function () {
 	 */
 Base.column_area = function () {
 
-return [["bigint",null,null,null],true,"MUL",null];
+return [["bigint","20","",false],true,"MUL",null];
 };
 
 /**
@@ -746,7 +746,7 @@ Base.prototype.maxSize_population = function () {
 	 */
 Base.column_population = function () {
 
-return [["bigint",null,null,null],true,"MUL",null];
+return [["bigint","20","",false],true,"MUL",null];
 };
 
 /**

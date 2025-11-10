@@ -313,9 +313,9 @@ return array (
   0 => 
   array (
     0 => 'int',
-    1 => NULL,
-    2 => NULL,
-    3 => NULL,
+    1 => '11',
+    2 => '',
+    3 => false,
   ),
   1 => false,
   2 => 'PRI',
@@ -368,9 +368,9 @@ return array (
   0 => 
   array (
     0 => 'int',
-    1 => NULL,
-    2 => NULL,
-    3 => NULL,
+    1 => '11',
+    2 => '',
+    3 => false,
   ),
   1 => false,
   2 => 'PRI',
@@ -423,9 +423,9 @@ return array (
   0 => 
   array (
     0 => 'tinyint',
-    1 => NULL,
-    2 => NULL,
-    3 => NULL,
+    1 => '4',
+    2 => '',
+    3 => false,
   ),
   1 => false,
   2 => 'MUL',

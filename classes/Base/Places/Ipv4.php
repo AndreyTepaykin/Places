@@ -16,8 +16,8 @@
  *
  * @param {array} [$fields=array()] The fields values to initialize table row as 
  * an associative array of $column => $value pairs
- * @param {mixed} [$fields.ipMin] defaults to ""
- * @param {mixed} [$fields.ipMax] defaults to ""
+ * @param {integer} [$fields.ipMin] defaults to 0
+ * @param {integer} [$fields.ipMax] defaults to 0
  * @param {integer} [$fields.geonameId] defaults to 0
  * @param {string} [$fields.countryCode] defaults to null
  * @param {integer} [$fields.registeredGeonameId] defaults to 0
@@ -34,14 +34,14 @@ abstract class Base_Places_Ipv4 extends Db_Row
 {
 	/**
 	 * @property $ipMin
-	 * @type mixed
-	 * @default ""
+	 * @type integer
+	 * @default 0
 	 * 
 	 */
 	/**
 	 * @property $ipMax
-	 * @type mixed
-	 * @default ""
+	 * @type integer
+	 * @default 0
 	 * 
 	 */
 	/**
@@ -325,6 +325,40 @@ abstract class Base_Places_Ipv4 extends Db_Row
 	}
 	
 	/**
+	 * Method is called before setting the field and verifies if integer value falls within allowed limits
+	 * @method beforeSet_ipMin
+	 * @param {integer} $value
+	 * @return {array} An array of field name and value
+	 * @throws {Exception} An exception is thrown if $value is not integer or does not fit in allowed range
+	 */
+	function beforeSet_ipMin($value)
+	{
+		if ($value instanceof Db_Expression
+               or $value instanceof Db_Range) {
+			return array('ipMin', $value);
+		}
+		if (!is_numeric($value) or floor($value) != $value)
+			throw new Exception('Non-integer value being assigned to '.$this->getTable().".ipMin");
+		$value = intval($value);
+		if ($value < 0 or $value > 4294967295) {
+			$json = json_encode($value);
+			throw new Exception("Out-of-range value $json being assigned to ".$this->getTable().".ipMin");
+		}
+		return array('ipMin', $value);			
+	}
+
+	/**
+	 * @method maxSize_ipMin
+	 * Returns the maximum integer that can be assigned to the ipMin field
+	 * @return {integer}
+	 */
+	function maxSize_ipMin()
+	{
+
+		return 4294967295;			
+	}
+
+	/**
 	 * Returns schema information for ipMin column
 	 * @return {array} [[typeName, displayRange, modifiers, unsigned], isNull, key, default]
 	 */
@@ -334,15 +368,49 @@ abstract class Base_Places_Ipv4 extends Db_Row
 return array (
   0 => 
   array (
-    0 => 'int unsigned',
-    1 => NULL,
-    2 => NULL,
-    3 => NULL,
+    0 => 'int',
+    1 => '10',
+    2 => ' unsigned',
+    3 => true,
   ),
   1 => false,
   2 => 'PRI',
   3 => NULL,
 );			
+	}
+
+	/**
+	 * Method is called before setting the field and verifies if integer value falls within allowed limits
+	 * @method beforeSet_ipMax
+	 * @param {integer} $value
+	 * @return {array} An array of field name and value
+	 * @throws {Exception} An exception is thrown if $value is not integer or does not fit in allowed range
+	 */
+	function beforeSet_ipMax($value)
+	{
+		if ($value instanceof Db_Expression
+               or $value instanceof Db_Range) {
+			return array('ipMax', $value);
+		}
+		if (!is_numeric($value) or floor($value) != $value)
+			throw new Exception('Non-integer value being assigned to '.$this->getTable().".ipMax");
+		$value = intval($value);
+		if ($value < 0 or $value > 4294967295) {
+			$json = json_encode($value);
+			throw new Exception("Out-of-range value $json being assigned to ".$this->getTable().".ipMax");
+		}
+		return array('ipMax', $value);			
+	}
+
+	/**
+	 * @method maxSize_ipMax
+	 * Returns the maximum integer that can be assigned to the ipMax field
+	 * @return {integer}
+	 */
+	function maxSize_ipMax()
+	{
+
+		return 4294967295;			
 	}
 
 	/**
@@ -355,10 +423,10 @@ return array (
 return array (
   0 => 
   array (
-    0 => 'int unsigned',
-    1 => NULL,
-    2 => NULL,
-    3 => NULL,
+    0 => 'int',
+    1 => '10',
+    2 => ' unsigned',
+    3 => true,
   ),
   1 => false,
   2 => 'PRI',
@@ -414,9 +482,9 @@ return array (
   0 => 
   array (
     0 => 'int',
-    1 => NULL,
-    2 => NULL,
-    3 => NULL,
+    1 => '11',
+    2 => '',
+    3 => false,
   ),
   1 => true,
   2 => 'MUL',
@@ -527,9 +595,9 @@ return array (
   0 => 
   array (
     0 => 'int',
-    1 => NULL,
-    2 => NULL,
-    3 => NULL,
+    1 => '11',
+    2 => '',
+    3 => false,
   ),
   1 => true,
   2 => '',
@@ -585,9 +653,9 @@ return array (
   0 => 
   array (
     0 => 'int',
-    1 => NULL,
-    2 => NULL,
-    3 => NULL,
+    1 => '11',
+    2 => '',
+    3 => false,
   ),
   1 => true,
   2 => '',
@@ -880,9 +948,9 @@ return array (
   0 => 
   array (
     0 => 'int',
-    1 => NULL,
-    2 => NULL,
-    3 => NULL,
+    1 => '11',
+    2 => '',
+    3 => false,
   ),
   1 => true,
   2 => '',
@@ -963,10 +1031,10 @@ return array (
 			}
 		}
 		if (!isset($this->fields["ipMin"]) and !isset($value["ipMin"])) {
-			$this->ipMin = $value["ipMin"] = "";
+			$this->ipMin = $value["ipMin"] = 0;
 		}
 		if (!isset($this->fields["ipMax"]) and !isset($value["ipMax"])) {
-			$this->ipMax = $value["ipMax"] = "";
+			$this->ipMax = $value["ipMax"] = 0;
 		}
 		return $value;			
 	}
