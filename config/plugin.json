@@ -160,7 +160,11 @@
 				"areas": ["Places", "sortAreaFilenames"]
 			}
 		},
-		"onInsert": {}
+		"onInsert": {
+			"user": [
+				"Places/user/locations"
+			]
+		}
 	},
 	"Places": {
 		"nearby": {

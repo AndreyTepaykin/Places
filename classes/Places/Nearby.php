@@ -368,8 +368,15 @@ class Places_Nearby
 		$postcode = $postcodes ? reset($postcodes) : null;
 		$attributes = @compact('latitude', 'longitude', 'meters');
 		if ($postcode) {
-			foreach (array('postcode', 'placeName', 'state') as $attr) {
+			foreach (array('postcode', 'countryCode') as $attr) {
 				$attributes[$attr] = $postcode->$attr;
+			}
+			if ($postcode->geonameId) {
+				$city = new Places_City(array('geonameId' => $postcode->geonameId));
+				if ($city->retrieve()) {
+					$attributes['city'] = $city->localName;
+					$attributes['timeZone'] = $city->timeZone;
+				}	
 			}
 		}
 		$lat = sprintf("%0.1f", $latitude);

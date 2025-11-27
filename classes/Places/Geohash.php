@@ -209,16 +209,25 @@ class Places_Geohash
                 $row->set('Places/distance', $dist);
             }
 
-            usort($result, create_function('$a, $b', '
-                $da = $a->get("Places/distance");
-                $db = $b->get("Places/distance");
-                if ($da == $db) return 0;
-                return ($da < $db) ? -1 : 1;
-            '));
+            // Replaced deprecated create_function()
+            usort($result, array(__CLASS__, '_compareDistances'));
         }
 
         return array_slice($result, 0, $limit);
     }
+
+    /**
+     * Comparator for usort() – PHP 5.2 compatible replacement for create_function
+     */
+    private static function _compareDistances($a, $b)
+    {
+        $da = $a->get("Places/distance");
+        $db = $b->get("Places/distance");
+
+        if ($da == $db) return 0;
+        return ($da < $db) ? -1 : 1;
+    }
+
 
     /**
      * Compare two rows by precomputed distance
