@@ -363,7 +363,7 @@ class Places_Location extends Base_Places_Location
 			$attributes['timezone'] = floatval($attributes['timezone']);
 		}
 
-		// If postcode is given but no lat/lon → resolve it
+		// If postcode is given but no lat/lon then resolve it
 		if (!empty($attributes['postcode']) && !isset($attributes['latitude'])) {
 			$z = new Places_Postcode();
 			$z->countryCode = 'US';

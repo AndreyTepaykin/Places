@@ -373,7 +373,7 @@ Q.Tool.define("Places/globe", function _Places_globe(options) {
 	 * @param {Boolean|Number} [options.rotate=true] Whether to rotate toward each ping, and how fast
 	 * @param {Boolean} [options.stopOnPointer=true] Stop rotation on pointer interaction
 	 * @param {Function} [options.filter] Optional callback(countryCode, feature) => bool
-	 * @param {Object} [options.prioritizeCountries] Map of countryCode → weight (0–10)
+	 * @param {Object} [options.prioritizeCountries] Map of countryCode to weight (0–10)
 	 * @param {String} [options.initialCountry] Country code to show first ping in
 	 */
 	addRandomPings: function (options) {
