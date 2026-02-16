@@ -4313,7 +4313,7 @@
     var project, rotate, projectRotate, projectResample = d3_geo_resample(function(x, y) {
       x = project(x, y);
       return [ x[0] * k + _dx, _dy - x[1] * k ];
-    }), k = 150, x = 480, y = 250, _l = 0, _f = 0, _d_l = 0, _d_f = 0, _dγ = 0, _dx, _dy, preclip = d3_geo_clipAntimeridian, postclip = d3_identity, clipAngle = null, clipExtent = null, stream;
+    }), k = 150, x = 480, y = 250, _l = 0, _f = 0, _d_l = 0, _d_f = 0, _d_g = 0, _dx, _dy, preclip = d3_geo_clipAntimeridian, postclip = d3_identity, clipAngle = null, clipExtent = null, stream;
     function projection(point) {
       point = projectRotate(point[0] * d3_radians, point[1] * d3_radians);
       return [ point[0] * k + _dx, _dy - point[1] * k ];
@@ -4357,15 +4357,15 @@
       return reset();
     };
     projection.rotate = function(_) {
-      if (!arguments.length) return [ _d_l * d3_degrees, _d_f * d3_degrees, _dγ * d3_degrees ];
+      if (!arguments.length) return [ _d_l * d3_degrees, _d_f * d3_degrees, _d_g * d3_degrees ];
       _d_l = _[0] % 360 * d3_radians;
       _d_f = _[1] % 360 * d3_radians;
-      _dγ = _.length > 2 ? _[2] % 360 * d3_radians : 0;
+      _d_g = _.length > 2 ? _[2] % 360 * d3_radians : 0;
       return reset();
     };
     d3.rebind(projection, projectResample, "precision");
     function reset() {
-      projectRotate = d3_geo_compose(rotate = d3_geo_rotation(_d_l, _d_f, _dγ), project);
+      projectRotate = d3_geo_compose(rotate = d3_geo_rotation(_d_l, _d_f, _d_g), project);
       var center = project(_l, _f);
       _dx = x - center[0] * k;
       _dy = y + center[1] * k;
@@ -4408,8 +4408,8 @@
     return [ _l > _p ? _l - _t : _l < -_p ? _l + _t : _l, _f ];
   }
   d3_geo_identityRotation.invert = d3_geo_equirectangular;
-  function d3_geo_rotation(_d_l, _d_f, _dγ) {
-    return _d_l ? _d_f || _dγ ? d3_geo_compose(d3_geo_rotation_l(_d_l), d3_geo_rotation_fγ(_d_f, _dγ)) : d3_geo_rotation_l(_d_l) : _d_f || _dγ ? d3_geo_rotation_fγ(_d_f, _dγ) : d3_geo_identityRotation;
+  function d3_geo_rotation(_d_l, _d_f, _d_g) {
+    return _d_l ? _d_f || _d_g ? d3_geo_compose(d3_geo_rotation_l(_d_l), d3_geo_rotation_f_g(_d_f, _d_g)) : d3_geo_rotation_l(_d_l) : _d_f || _d_g ? d3_geo_rotation_f_g(_d_f, _d_g) : d3_geo_identityRotation;
   }
   function d3_geo_forwardRotation_l(_d_l) {
     return function(_l, _f) {
@@ -4421,15 +4421,15 @@
     rotation.invert = d3_geo_forwardRotation_l(-_d_l);
     return rotation;
   }
-  function d3_geo_rotation_fγ(_d_f, _dγ) {
-    var cos_d_f = Math.cos(_d_f), sin_d_f = Math.sin(_d_f), cos_dγ = Math.cos(_dγ), sin_dγ = Math.sin(_dγ);
+  function d3_geo_rotation_f_g(_d_f, _d_g) {
+    var cos_d_f = Math.cos(_d_f), sin_d_f = Math.sin(_d_f), cos_d_g = Math.cos(_d_g), sin_d_g = Math.sin(_d_g);
     function rotation(_l, _f) {
       var cos_f = Math.cos(_f), x = Math.cos(_l) * cos_f, y = Math.sin(_l) * cos_f, z = Math.sin(_f), k = z * cos_d_f + x * sin_d_f;
-      return [ Math.atan2(y * cos_dγ - k * sin_dγ, x * cos_d_f - z * sin_d_f), d3_asin(k * cos_dγ + y * sin_dγ) ];
+      return [ Math.atan2(y * cos_d_g - k * sin_d_g, x * cos_d_f - z * sin_d_f), d3_asin(k * cos_d_g + y * sin_d_g) ];
     }
     rotation.invert = function(_l, _f) {
-      var cos_f = Math.cos(_f), x = Math.cos(_l) * cos_f, y = Math.sin(_l) * cos_f, z = Math.sin(_f), k = z * cos_dγ - y * sin_dγ;
-      return [ Math.atan2(y * cos_dγ + z * sin_dγ, x * cos_d_f + k * sin_d_f), d3_asin(k * cos_d_f - x * sin_d_f) ];
+      var cos_f = Math.cos(_f), x = Math.cos(_l) * cos_f, y = Math.sin(_l) * cos_f, z = Math.sin(_f), k = z * cos_d_g - y * sin_d_g;
+      return [ Math.atan2(y * cos_d_g + z * sin_d_g, x * cos_d_f + k * sin_d_f), d3_asin(k * cos_d_f - x * sin_d_f) ];
     };
     return rotation;
   }
