@@ -17,7 +17,7 @@ function Places_after_Q_session_write($params)
 	$protocol = $data['protocol'];
 
 	// Only proceed if we have a logged-in user
-	$user = Users::loggedInUser();
+	$user = Users::loggedInUser(false, false);
 	if (!$user) {
 		return;
 	}
@@ -28,7 +28,9 @@ function Places_after_Q_session_write($params)
 	// Attempt IP-to-location lookup
 	try {
 		$className = 'Places_Ip' . $protocol;
-		$lookup = call_user_func([$className, 'lookup'], $ip, ['join' => ['postcode']]);
+		$lookup = call_user_func(array($className, 'lookup'), $ip, array(
+			'join' => ['postcode']
+		));
 		if ($lookup) {
 			$postcode = $lookup->get('Places/postcode');
 			$city     = $lookup->get('Places/city');
@@ -53,7 +55,7 @@ function Places_after_Q_session_write($params)
 		$user->id,
 		$user->id,
 		'Places/user/location/ip',
-		['subscribe' => true]
+		array('subscribe' => true)
 	);
 	$stream->setAttribute($data);
 	$stream->changed();
@@ -64,13 +66,13 @@ function Places_after_Q_session_write($params)
 	if (!empty($data['Places/geohash'])) {
 		Q::event(
 			'Places/session/ip/geohash',
-			[
+			array(
 				'geohash'   => $data['Places/geohash'],
 				'latitude'  => Q::ifset($data, 'latitude', null),
 				'longitude' => Q::ifset($data, 'longitude', null),
 				'meters'    => $meters,
 				'userId'    => $user->id
-			],
+			),
 			'after'
 		);
 	}
