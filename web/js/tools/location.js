@@ -234,7 +234,8 @@
 						// if logged user is not a publisher of Places/user/locations
 						// need to participate this user to this category to allow
 						// get messages about changes
-						if (userId !== Users.loggedInUserId()) {
+						var loggedInUserId = Users.loggedInUserId();
+						if (loggedInUserId && userId !== loggedInUserId) {
 							Streams.Stream.join(userId, 'Places/user/locations');
 						}
 	
