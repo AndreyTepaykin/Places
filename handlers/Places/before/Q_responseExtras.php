@@ -11,4 +11,9 @@ function Places_before_Q_responseExtras()
 	Q_Response::setScriptData("Q.plugins.Places.nearby.meters", $meters);
 	$defaultMeters = Q_Config::expect('Places', 'nearby', 'defaultMeters');
 	Q_Response::setScriptData("Q.plugins.Places.nearby.defaultMeters", $defaultMeters);
+	Q_Response::setScriptData('Places.config', array(
+		'google' => array(
+			'embedKey' => Q_Config::get('Places', 'google', 'embedKey', '')
+		)
+	));
 }

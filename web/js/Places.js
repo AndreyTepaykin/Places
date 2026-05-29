@@ -33,6 +33,69 @@ var Places = Q.Places = Q.plugins.Places = {
 			Q.addScript(Places.loadGoogleMaps.src);
 		}
 	},
+
+	/**
+	 * Load Apple MapKit JS before using interactive Apple Maps instances.
+	 *
+	 * NOT required for the Places/directions tool's iframe embed mode —
+	 * the embed URL (maps.apple.com?output=embed) works without MapKit JS.
+	 * Use this only when you need programmatic map instances with annotations.
+	 *
+	 * Apple MapKit JS requires a signed JWT token. The token can be:
+	 *   - Fetched from your server via tokenUrl (recommended)
+	 *   - Passed directly as a string (for dev/testing only)
+	 *
+	 * @method loadAppleMaps
+	 * @static
+	 * @param {String|Function} [tokenOrFn]
+	 *   A JWT token string, or a function that calls done(token).
+	 *   If omitted, attempts to fetch from Places.loadAppleMaps.tokenUrl.
+	 * @param {Function} callback  Called once mapkit is initialized
+	 */
+	loadAppleMaps: function (tokenOrFn, callback) {
+		if (typeof tokenOrFn === 'function' && !callback) {
+			callback = tokenOrFn;
+			tokenOrFn = null;
+		}
+
+		if (w.mapkit && w.mapkit.Map) {
+			Q.handle(callback);
+			return;
+		}
+
+		if (Places.loadAppleMaps._loading) {
+			Places.loadAppleMaps.waitingCallbacks.push(callback);
+			return;
+		}
+		Places.loadAppleMaps._loading = true;
+		Places.loadAppleMaps.waitingCallbacks.push(callback);
+
+		Q.addScript('https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.core.js', function () {
+			var authCallback = typeof tokenOrFn === 'function'
+				? tokenOrFn
+				: function (done) {
+					var token = typeof tokenOrFn === 'string' ? tokenOrFn : null;
+					var tokenUrl = Places.loadAppleMaps.tokenUrl;
+					if (token) {
+						done(token);
+					} else if (tokenUrl) {
+						Q.req(tokenUrl, function (err, response) {
+							done(err ? '' : response.slots.token);
+						});
+					} else {
+						console.warn('Places.loadAppleMaps: no token or tokenUrl provided');
+						done('');
+					}
+				};
+
+			mapkit.init({ authorizationCallback: authCallback });
+
+			Places.loadAppleMaps._loading = false;
+			var cbs = Places.loadAppleMaps.waitingCallbacks.slice();
+			Places.loadAppleMaps.waitingCallbacks = [];
+			cbs.forEach(function (cb) { Q.handle(cb); });
+		});
+	},
 	
 	/**
 	 * @method loadCountries
@@ -370,6 +433,17 @@ Places.route.onError = new Q.Event(function (directions, status) {
 	console.warn('Places.route: request failed due to ' + status);
 });
 
+// Static properties for loadGoogleMaps
+Places.loadGoogleMaps.waitingCallbacks = [];
+Places.loadGoogleMaps.loaded = function _Places_loadGoogleMaps_loaded () {
+	Q.handle(Places.loadGoogleMaps.waitingCallbacks);
+};
+
+// Static properties for loadAppleMaps
+Places.loadAppleMaps.waitingCallbacks = [];
+Places.loadAppleMaps._loading = false;
+Places.loadAppleMaps.tokenUrl = null; // set in Q.beforeInit if needed
+
 /**
  * Represents geospacial coordinates with latitude, longitude, heading.
  * Similar to HTML5 Coordinates object.
@@ -682,12 +756,16 @@ Q.beforeInit.set(function () {
 		+ '&libraries=geometry,places'
 		+ (plk ? '&key='+encodeURIComponent(plk) : '')
 		+ '&callback=Q.Places.loadGoogleMaps.loaded';
-}, 'Places');
 
-Places.loadGoogleMaps.waitingCallbacks = [];
-Places.loadGoogleMaps.loaded = function _Places_loadGoogleMaps_loaded () {
-	Q.handle(Places.loadGoogleMaps.waitingCallbacks);
-};
+	// Apple MapKit token URL (optional — only needed for interactive MapKit JS,
+	// not for the Places/directions iframe embed mode)
+	var appleTokenUrl = Q.Config && Q.Config.get
+		? Q.Config.get(['Places', 'apple', 'maps', 'tokenUrl'], null)
+		: null;
+	if (appleTokenUrl) {
+		Places.loadAppleMaps.tokenUrl = appleTokenUrl;
+	}
+}, 'Places');
 
 Q.Streams.Message.shouldRefreshStream("Places/location/updated", true);
 
@@ -701,13 +779,17 @@ Q.Text.addFor(
 );
 
 Q.Tool.define({
-	"Places/address": "{{Places}}/js/tools/address.js",
-	"Places/globe": "{{Places}}/js/tools/globe.js",
-	"Places/countries": "{{Places}}/js/tools/countries.js",
-	"Places/user/location": "{{Places}}/js/tools/user/location.js",
-	"Places/location": "{{Places}}/js/tools/location.js",
+	"Places/address":          "{{Places}}/js/tools/address.js",
+	"Places/globe":            "{{Places}}/js/tools/globe.js",
+	"Places/countries":        "{{Places}}/js/tools/countries.js",
+	"Places/user/location":    "{{Places}}/js/tools/user/location.js",
+	"Places/location":         "{{Places}}/js/tools/location.js",
 	"Places/location/preview": "{{Places}}/js/tools/location/preview.js",
-	"Places/areas": "{{Places}}/js/tools/areas.js"
+	"Places/areas":            "{{Places}}/js/tools/areas.js",
+	"Places/directions": {
+		js:  "{{Places}}/js/tools/directions.js",
+		css: "{{Places}}/css/tools/directions.css"
+	}
 });
 
 })(Q, Q.jQuery, window);
