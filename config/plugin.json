@@ -93,6 +93,21 @@
 				},
 				"participating": ["Places/participating"]
 			},
+			"Places/table": {
+				"emoji": "🪑",
+				"create": true,
+				"edit": true,
+				"defaults": {
+					"icon": "{{Places}}/img/icons/table",
+					"title": "Table within Area"
+				},
+				"relatedFrom": {
+					"*": {
+						"description": "Posted to a specific table"
+					}
+				},
+				"participating": ["Places/participating"]
+			},
 			"Places/floor": {
 				"emoji": "🏗️",
 				"edit": true,
