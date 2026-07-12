@@ -42,9 +42,23 @@ Q.Tool.define("Places/address", function _Places_address(options) {
 		state.metric = Places.metric;
 	}
 	state.mapElement = state.mapElement || $('<div />').appendTo(this.element)[0];
+
 	var p = Q.pipe(['google', 'filter'], function (params, subjects) {
-		tool.service = new google.maps.places.PlacesService(state.mapElement);
-		tool.refresh();
+    // 1. Dynamic import of the modern places library using Promises
+    google.maps.importLibrary("places")
+        .then(function (library) {
+            // 2. Assign the new Place class to your tool state
+            tool.Place = library.Place;
+            
+            // 3. Keep a reference to your map element if your tool logic requires it
+            tool.mapElement = state.mapElement; 
+            
+            // 4. Trigger your tool refresh now that the API is ready
+            tool.refresh();
+        })
+        .catch(function (error) {
+            console.error("Failed to load Google Maps Places library:", error);
+        });
 	});
 	Q.Places.loadGoogleMaps(p.fill('google'));
 	$('<div />').tool('Q/filter', state.filter, 'Q_filter')
