@@ -397,7 +397,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".countryCode");
-		if (strlen($value) > 2)
+		if (mb_strlen($value) > 2)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".countryCode");
 		return array('countryCode', $value);			
 	}
@@ -452,7 +452,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".normalizedName");
-		if (strlen($value) > 180)
+		if (mb_strlen($value) > 180)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".normalizedName");
 		return array('normalizedName', $value);			
 	}
@@ -507,7 +507,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".englishName");
-		if (strlen($value) > 180)
+		if (mb_strlen($value) > 180)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".englishName");
 		return array('englishName', $value);			
 	}
@@ -562,7 +562,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".localName");
-		if (strlen($value) > 180)
+		if (mb_strlen($value) > 180)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".localName");
 		return array('localName', $value);			
 	}
@@ -683,7 +683,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".geohash");
-		if (strlen($value) > 31)
+		if (mb_strlen($value) > 31)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".geohash");
 		return array('geohash', $value);			
 	}
@@ -738,7 +738,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".timeZone");
-		if (strlen($value) > 40)
+		if (mb_strlen($value) > 40)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".timeZone");
 		return array('timeZone', $value);			
 	}
@@ -851,7 +851,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".featureCode");
-		if (strlen($value) > 10)
+		if (mb_strlen($value) > 10)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".featureCode");
 		return array('featureCode', $value);			
 	}

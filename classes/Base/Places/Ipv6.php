@@ -343,7 +343,7 @@ abstract class Base_Places_Ipv6 extends Db_Row
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".ipMin");
-		if (strlen($value) > 16)
+		if (mb_strlen($value) > 16)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".ipMin");
 		return array('ipMin', $value);			
 	}
@@ -398,7 +398,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".ipMax");
-		if (strlen($value) > 16)
+		if (mb_strlen($value) > 16)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".ipMax");
 		return array('ipMax', $value);			
 	}
@@ -511,7 +511,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".countryCode");
-		if (strlen($value) > 2)
+		if (mb_strlen($value) > 2)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".countryCode");
 		return array('countryCode', $value);			
 	}
@@ -792,7 +792,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".postcode");
-		if (strlen($value) > 20)
+		if (mb_strlen($value) > 20)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".postcode");
 		return array('postcode', $value);			
 	}

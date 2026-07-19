@@ -299,7 +299,7 @@ abstract class Base_Places_Postcode extends Db_Row
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".countryCode");
-		if (strlen($value) > 2)
+		if (mb_strlen($value) > 2)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".countryCode");
 		return array('countryCode', $value);			
 	}
@@ -354,7 +354,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".postcode");
-		if (strlen($value) > 10)
+		if (mb_strlen($value) > 10)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".postcode");
 		return array('postcode', $value);			
 	}
@@ -539,7 +539,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".geohash");
-		if (strlen($value) > 31)
+		if (mb_strlen($value) > 31)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".geohash");
 		return array('geohash', $value);			
 	}
