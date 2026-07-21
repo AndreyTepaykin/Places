@@ -311,7 +311,7 @@ abstract class Base_Places_Autocomplete extends Db_Row
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".query");
-		if (strlen($value) > 127)
+		if (mb_strlen($value) > 127)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".query");
 		return array('query', $value);			
 	}
@@ -366,7 +366,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".types");
-		if (strlen($value) > 31)
+		if (mb_strlen($value) > 31)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".types");
 		return array('types', $value);			
 	}
@@ -617,7 +617,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".results");
-		if (strlen($value) > 65535)
+		if (mb_strlen($value) > 65535)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".results");
 		return array('results', $value);			
 	}

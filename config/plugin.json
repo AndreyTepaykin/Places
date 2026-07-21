@@ -27,6 +27,11 @@
 				"include": ["Places"]
 			}
 		},
+		"webserver": {
+			"preload": [
+				"Places", "Places_Nearby", "Places_Location", "Places_Postcode"
+			]
+		},
 		"bundle": {
 			"exclude": {
 				"Places": ["img/squareflags"]

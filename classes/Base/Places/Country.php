@@ -349,7 +349,7 @@ abstract class Base_Places_Country extends Db_Row
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".countryCode");
-		if (strlen($value) > 2)
+		if (mb_strlen($value) > 2)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".countryCode");
 		return array('countryCode', $value);			
 	}
@@ -404,7 +404,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".countryCode3");
-		if (strlen($value) > 3)
+		if (mb_strlen($value) > 3)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".countryCode3");
 		return array('countryCode3', $value);			
 	}
@@ -575,7 +575,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".phoneCode");
-		if (strlen($value) > 20)
+		if (mb_strlen($value) > 20)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".phoneCode");
 		return array('phoneCode', $value);			
 	}
@@ -630,7 +630,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".normalizedName");
-		if (strlen($value) > 180)
+		if (mb_strlen($value) > 180)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".normalizedName");
 		return array('normalizedName', $value);			
 	}
@@ -685,7 +685,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".englishName");
-		if (strlen($value) > 180)
+		if (mb_strlen($value) > 180)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".englishName");
 		return array('englishName', $value);			
 	}
@@ -740,7 +740,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".localName");
-		if (strlen($value) > 180)
+		if (mb_strlen($value) > 180)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".localName");
 		return array('localName', $value);			
 	}
@@ -795,7 +795,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".emojiFlag");
-		if (strlen($value) > 8)
+		if (mb_strlen($value) > 8)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".emojiFlag");
 		return array('emojiFlag', $value);			
 	}
@@ -966,7 +966,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".continent");
-		if (strlen($value) > 2)
+		if (mb_strlen($value) > 2)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".continent");
 		return array('continent', $value);			
 	}
@@ -1021,7 +1021,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".currencyCode");
-		if (strlen($value) > 3)
+		if (mb_strlen($value) > 3)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".currencyCode");
 		return array('currencyCode', $value);			
 	}
@@ -1076,7 +1076,7 @@ return array (
 		}
 		if (!is_string($value) and !is_numeric($value))
 			throw new Exception('Must pass a string to '.$this->getTable().".currencyName");
-		if (strlen($value) > 64)
+		if (mb_strlen($value) > 64)
 			throw new Exception('Exceedingly long value being assigned to '.$this->getTable().".currencyName");
 		return array('currencyName', $value);			
 	}
